@@ -9,6 +9,10 @@
             "email": "bugadani@gmail.com"
         }
     ],
+    "require": {
+        "php": ">=5.3.3",
+        "miny/cache": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "Modules\\DBAL\\": "src/"

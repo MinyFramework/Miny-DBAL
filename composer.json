@@ -1,0 +1,17 @@
+{
+    "name": "miny/dbal",
+    "description": "Database Abstraction Layer for the Miny Framework",
+    "minimum-stability": "dev",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Dániel Buga",
+            "email": "bugadani@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Modules\\DBAL\\": "src/"
+        }
+    }
+}

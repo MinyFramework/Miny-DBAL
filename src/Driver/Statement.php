@@ -44,7 +44,7 @@ interface Statement
     public function fetchAll(
         $fetchStyle = null,
         $fetchArgument = null,
-        array $ctorArgs = array()
+        $ctorArgs = null
     );
 
     public function fetchColumn($columnNumber = 0);

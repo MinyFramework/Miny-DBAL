@@ -78,13 +78,21 @@ abstract class Driver
     abstract public function getAttribute($name);
 
     /**
+     * @param       $query
+     * @param array $params
+     *
+     * @return Statement
+     */
+    abstract public function query($query, array $params = null);
+
+    /**
      * @param $query
      *
      * @return Statement
      */
-    abstract public function query($query);
-
     abstract public function prepare($query);
+
+    abstract public function lastInsertId($name = null);
 
     abstract public function beginTransaction();
 

@@ -91,22 +91,22 @@ class Select extends AbstractQueryBuilder
         return $this;
     }
 
-    public function join($left, $table, $alias, $condition)
+    public function join($left, $table, $alias = null, $condition = null)
     {
         return $this->addJoin(self::JOIN_INNER, $left, $table, $alias, $condition);
     }
 
-    public function leftJoin($left, $table, $alias, $condition)
+    public function leftJoin($left, $table, $alias = null, $condition = null)
     {
         return $this->addJoin(self::JOIN_LEFT, $left, $table, $alias, $condition);
     }
 
-    public function rightJoin($left, $table, $alias, $condition)
+    public function rightJoin($left, $table, $alias = null, $condition = null)
     {
         return $this->addJoin(self::JOIN_RIGHT, $left, $table, $alias, $condition);
     }
 
-    public function fullJoin($left, $table, $alias, $condition)
+    public function fullJoin($left, $table, $alias = null, $condition = null)
     {
         return $this->addJoin(self::JOIN_FULL, $left, $table, $alias, $condition);
     }
@@ -188,8 +188,10 @@ class Select extends AbstractQueryBuilder
         $fromParts = array();
         foreach ($this->from as $from) {
             $query = $from[0];
-            if ($from[1]) {
+            if ($from[1] && $from[1] !== $from[0]) {
                 $query .= ' ' . $from[1];
+            } else {
+                $from[1] = $from[0];
             }
 
             $query .= $this->getJoinPart($from[1]);
@@ -208,7 +210,14 @@ class Select extends AbstractQueryBuilder
         $query = '';
         foreach ($this->joins[$alias] as $join) {
             list($type, $table, $alias, $condition) = $join;
-            $query .= $type . $table . ' ' . $alias;
+
+            $query .= $type . $table;
+
+            if ($alias && $alias !== $table) {
+                $query .= ' ' . $alias;
+            } else {
+                $alias = $table;
+            }
 
             if ($condition) {
                 $query .= ' ON ' . $join[3];

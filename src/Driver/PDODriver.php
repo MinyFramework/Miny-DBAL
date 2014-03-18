@@ -42,7 +42,7 @@ abstract class PDODriver extends Driver
 
     public function query($query, array $params = null)
     {
-        if ($params === null) {
+        if (empty($params)) {
             return $this->pdo->query($query);
         }
         $statement = $this->pdo->prepare($query);
@@ -84,5 +84,10 @@ abstract class PDODriver extends Driver
     public function getAttribute($name)
     {
         return $this->pdo->getAttribute($name);
+    }
+
+    public function lastInsertId($name = null)
+    {
+        return $this->pdo->lastInsertId($name);
     }
 }

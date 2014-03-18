@@ -40,9 +40,15 @@ abstract class PDODriver extends Driver
         return $this->pdo->exec($query);
     }
 
-    public function query($query)
+    public function query($query, array $params = null)
     {
-        return $this->pdo->query($query);
+        if ($params === null) {
+            return $this->pdo->query($query);
+        }
+        $statement = $this->pdo->prepare($query);
+        $statement->execute($params);
+
+        return $statement;
     }
 
     public function prepare($query, array $options = array())

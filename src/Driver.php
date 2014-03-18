@@ -10,6 +10,7 @@
 namespace Modules\DBAL;
 
 use InvalidArgumentException;
+use Modules\DBAL\Driver\Statement;
 
 abstract class Driver
 {
@@ -57,10 +58,30 @@ abstract class Driver
         }
     }
 
+    public function fetch($query, array $params = null)
+    {
+        return $this->query($query, $params)->fetch();
+    }
+
+    public function fetchAll($query, array $params = null)
+    {
+        return $this->query($query, $params)->fetchAll();
+    }
+
+    public function fetchColumn($query, array $params = null, $columnNumber = 0)
+    {
+        return $this->query($query, $params)->fetchColumn($columnNumber);
+    }
+
     abstract public function setAttribute($name, $value);
 
     abstract public function getAttribute($name);
 
+    /**
+     * @param $query
+     *
+     * @return Statement
+     */
     abstract public function query($query);
 
     abstract public function prepare($query);
@@ -70,6 +91,17 @@ abstract class Driver
     abstract public function commit();
 
     abstract public function rollback();
+
+    /**
+     * Quotes an identifier (e.g. table, column) to be safe to use in queries.
+     * @param string $identifier
+     *
+     * @return string The quoted identifier.
+     */
+    public function quoteIdentifier($identifier)
+    {
+        return $this->platform->quoteIdentifier($identifier);
+    }
 
     abstract public function quoteLiteral($literal, $type = null);
 }

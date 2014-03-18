@@ -10,14 +10,15 @@
 namespace Modules\DBAL\Driver;
 
 use Modules\DBAL\Driver;
-use Modules\DBAL\Platform;
 use Modules\DBAL\Platform\MySQL as MySQLPlatform;
+use Modules\DBAL\Platform;
 
 class MySQL extends PDODriver
 {
     public function __construct(array $params, $user, $password, array $options = array())
     {
         parent::__construct(new MySQLPlatform());
+
         $this->connect($this->constructDsn($params), $user, $password, $options);
     }
 

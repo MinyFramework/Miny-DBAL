@@ -15,6 +15,24 @@ class MySQL extends Platform
 {
     const MAX_LIMIT = '18446744073709551615';
 
+    /**
+     * @inheritdoc
+     */
+    public function quoteIdentifier($identifier)
+    {
+        return '`' . $identifier . '`';
+    }
+
+    public function getTableListingQuery()
+    {
+        return 'SHOW TABLES';
+    }
+
+    public function getTableDetailingQuery($table)
+    {
+        return 'DESCRIBE ' . $table;
+    }
+
     public function getLimitAndOffset($limit, $offset)
     {
         if (isset($limit)) {

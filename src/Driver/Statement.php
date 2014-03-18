@@ -36,14 +36,14 @@ interface Statement
     public function execute($inputParameters);
 
     public function fetch(
-        $fetchStyle,
+        $fetchStyle = null,
         $cursorOrientation = PDO::FETCH_ORI_NEXT,
         $cursorOffset = 0
     );
 
     public function fetchAll(
-        $fetchStyle,
-        $fetchArgument,
+        $fetchStyle = null,
+        $fetchArgument = null,
         array $ctorArgs = array()
     );
 

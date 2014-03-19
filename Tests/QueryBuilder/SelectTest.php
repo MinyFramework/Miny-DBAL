@@ -136,6 +136,33 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+
+    public function testSelectWithMultipleWhereClauses()
+    {
+        $select = new Select($this->platform);
+        $select->select('*')
+            ->from('table', 't')
+            ->where('name = ?')
+            ->andWhere('other = ?')
+            ->orWhere('another = ?');
+
+        $expected = 'SELECT * FROM table t WHERE ((name = ?) AND other = ?) OR another = ?';
+        $this->assertEquals($expected, $select->get());
+    }
+
+    public function testSelectWithMultipleHavingClauses()
+    {
+        $select = new Select($this->platform);
+        $select->select('*')
+            ->from('table', 't')
+            ->having('name = ?')
+            ->andHaving('other = ?')
+            ->orHaving('another = ?');
+
+        $expected = 'SELECT * FROM table t HAVING ((name = ?) AND other = ?) OR another = ?';
+        $this->assertEquals($expected, $select->get());
+    }
+
     public function testSelectWithHavingClause()
     {
         $select = new Select($this->platform);

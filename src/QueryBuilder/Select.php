@@ -58,26 +58,55 @@ class Select extends AbstractQueryBuilder
 
     public function where($expression)
     {
-        if ($expression instanceof Expression) {
-            $expression = $expression->get();
-        }
+        $expression = $this->getExpressionAsString($expression);
         $this->where = $expression;
+
+        return $this;
+    }
+
+    public function andWhere($expression)
+    {
+        $expression = $this->getExpressionAsString($expression);
+        $this->where = '(' . $this->where . ') AND ' . $expression;
+
+        return $this;
+    }
+
+    public function orWhere($expression)
+    {
+        $expression = $this->getExpressionAsString($expression);
+        $this->where = '(' . $this->where . ') OR ' . $expression;
 
         return $this;
     }
 
     public function having($expression)
     {
-        if ($expression instanceof Expression) {
-            $expression = $expression->get();
-        }
+        $expression = $this->getExpressionAsString($expression);
         $this->having = $expression;
 
         return $this;
     }
 
-    private function addJoin($type, $left, $table, $alias, $condition)
+    public function andHaving($expression)
     {
+        $expression = $this->getExpressionAsString($expression);
+        $this->having = '(' . $this->having . ') AND ' . $expression;
+
+        return $this;
+    }
+
+    public function orHaving($expression)
+    {
+        $expression   = $this->getExpressionAsString($expression);
+        $this->having = '(' . $this->having . ') OR ' . $expression;
+
+        return $this;
+    }
+
+    private function addJoin($type, $left, $table, $alias, $condition = null)
+    {
+        $condition = $this->getExpressionAsString($condition);
         if (!isset($this->joins[$left])) {
             $this->joins[$left] = array();
         }
@@ -282,5 +311,19 @@ class Select extends AbstractQueryBuilder
     private function getLimitingPart()
     {
         return $this->getPlatform()->getLimitAndOffset($this->limit, $this->offset);
+    }
+
+    /**
+     * @param $expression
+     *
+     * @return mixed
+     */
+    private function getExpressionAsString($expression)
+    {
+        if ($expression instanceof Expression) {
+            return $expression->get();
+        }
+
+        return $expression;
     }
 }

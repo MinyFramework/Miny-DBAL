@@ -136,7 +136,6 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
     public function testSelectWithMultipleWhereClauses()
     {
         $select = new Select($this->platform);
@@ -148,6 +147,20 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
         $expected = 'SELECT * FROM table t WHERE ((name = ?) AND other = ?) OR another = ?';
         $this->assertEquals($expected, $select->get());
+    }
+
+    public function testToggleLock()
+    {
+        $select = new Select($this->platform);
+        $select->select('*')
+            ->from('table', 't')
+            ->lockForUpdate();
+
+        $this->assertEquals('SELECT * FROM table t FOR UPDATE', $select->get());
+
+        $select->lockForUpdate(false);
+        $this->assertEquals('SELECT * FROM table t', $select->get());
+
     }
 
     public function testSelectWithMultipleHavingClauses()

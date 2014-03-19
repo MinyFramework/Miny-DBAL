@@ -190,9 +190,9 @@ class Select extends AbstractQueryBuilder
         return $this;
     }
 
-    public function lockForUpdate()
+    public function lockForUpdate($lock = true)
     {
-        $this->lock = true;
+        $this->lock = $lock;
 
         return $this;
     }

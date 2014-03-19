@@ -33,7 +33,7 @@ interface Statement
 
     public function errorInfo();
 
-    public function execute($inputParameters);
+    public function execute(array $inputParameters = null);
 
     public function fetch(
         $fetchStyle = null,

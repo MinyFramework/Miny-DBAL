@@ -30,7 +30,7 @@ class MySQL extends Platform
 
     public function getTableDetailingQuery($table)
     {
-        return 'DESCRIBE ' . $table;
+        return 'DESCRIBE ' . $this->quoteIdentifier($table);
     }
 
     public function getLimitAndOffset($limit, $offset)

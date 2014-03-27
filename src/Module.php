@@ -17,15 +17,17 @@ class Module extends \Miny\Modules\Module
     public function init(BaseApplication $app)
     {
         if ($this->hasConfiguration('driver')) {
-            $app->getContainer()->addAlias(
+            $container = $app->getContainer();
+            $container->addAlias(
                 __NAMESPACE__ . '\\Driver',
-                $this->getConfiguration('driver:class'),
-                array(
-                    $this->getConfiguration('driver:parameters'),
-                    $this->getConfiguration('driver:user'),
-                    $this->getConfiguration('driver:password'),
-                    $this->getConfiguration('driver:options')
-                )
+                $this->getConfiguration('driver:class')
+            );
+            $container->addConstructorArguments(
+                __NAMESPACE__ . '\\Driver',
+                $this->getConfiguration('driver:parameters'),
+                $this->getConfiguration('driver:user'),
+                $this->getConfiguration('driver:password'),
+                $this->getConfiguration('driver:options')
             );
         }
     }

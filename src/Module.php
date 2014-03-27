@@ -23,7 +23,7 @@ class Module extends \Miny\Modules\Module
                 $this->getConfiguration('driver:class')
             );
             $container->addConstructorArguments(
-                __NAMESPACE__ . '\\Driver',
+                $this->getConfiguration('driver:class'),
                 $this->getConfiguration('driver:parameters'),
                 $this->getConfiguration('driver:user'),
                 $this->getConfiguration('driver:password'),

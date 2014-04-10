@@ -50,7 +50,13 @@ abstract class Driver
         }
         $this->beginTransaction();
         try {
-            $function($this);
+            if (func_num_args() === 1) {
+                $function($this);
+            } else {
+                $args    = func_get_args();
+                $args[0] = $this;
+                call_user_func_array($function, $args);
+            }
             $this->commit();
         } catch (\PDOException $e) {
             $this->rollback();
@@ -102,6 +108,7 @@ abstract class Driver
 
     /**
      * Quotes an identifier (e.g. table, column) to be safe to use in queries.
+     *
      * @param string $identifier
      *
      * @return string The quoted identifier.

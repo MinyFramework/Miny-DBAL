@@ -13,15 +13,15 @@ use InvalidArgumentException;
 
 class Expression
 {
-    const OPERATOR_EQ  = '=';
-    const OPERATOR_NEQ = '<>';
-    const OPERATOR_LT  = '<';
-    const OPERATOR_LTE = '<=';
-    const OPERATOR_GT  = '>';
-    const OPERATOR_GTE = '>=';
-    const OPERATOR_IN  = ' IN';
-    const OPERATOR_NOT_IN = ' NOT IN';
-    const OPERATOR_LIKE = ' LIKE ';
+    const OPERATOR_EQ       = '=';
+    const OPERATOR_NEQ      = '<>';
+    const OPERATOR_LT       = '<';
+    const OPERATOR_LTE      = '<=';
+    const OPERATOR_GT       = '>';
+    const OPERATOR_GTE      = '>=';
+    const OPERATOR_IN       = ' IN';
+    const OPERATOR_NOT_IN   = ' NOT IN';
+    const OPERATOR_LIKE     = ' LIKE ';
     const OPERATOR_NOT_LIKE = ' NOT LIKE ';
 
     private $parts = array();
@@ -38,7 +38,7 @@ class Expression
         if ($expr !== $this) {
             $this->parts[] = $expr;
         }
-        $num = func_num_args();
+        $num   = func_num_args();
         $parts = array();
         while ($num-- >= 0) {
             array_unshift($parts, array_pop($this->parts));
@@ -53,9 +53,9 @@ class Expression
         if ($expr !== $this) {
             $this->parts[] = $expr;
         }
-        $num = func_num_args();
+        $num   = func_num_args();
         $parts = array();
-        while($num-- >= 0) {
+        while ($num-- >= 0) {
             array_unshift($parts, array_pop($this->parts));
         }
         $this->parts[] = '(' . implode(' OR ', $parts) . ')';

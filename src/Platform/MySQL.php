@@ -35,16 +35,11 @@ class MySQL extends Platform
 
     public function getLimitAndOffset($limit, $offset)
     {
-        if (isset($limit)) {
-            $limitPart = ' LIMIT ' . $limit;
-            if (isset($offset)) {
-                return $limitPart . ' OFFSET ' . $offset;
-            }
-
-            return $limitPart;
-        }
         if (isset($offset)) {
-            return ' LIMIT ' . self::MAX_LIMIT . ' OFFSET ' . $offset;
+            return ' LIMIT ' . ($limit ? : self::MAX_LIMIT) . ' OFFSET ' . $offset;
+        }
+        if (isset($limit)) {
+            return ' LIMIT ' . $limit;
         }
 
         return '';

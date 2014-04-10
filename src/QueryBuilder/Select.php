@@ -58,7 +58,7 @@ class Select extends AbstractQueryBuilder
 
     public function where($expression)
     {
-        $expression = $this->getExpressionAsString($expression);
+        $expression  = $this->getExpressionAsString($expression);
         $this->where = $expression;
 
         return $this;
@@ -66,7 +66,7 @@ class Select extends AbstractQueryBuilder
 
     public function andWhere($expression)
     {
-        $expression = $this->getExpressionAsString($expression);
+        $expression  = $this->getExpressionAsString($expression);
         $this->where = '(' . $this->where . ') AND ' . $expression;
 
         return $this;
@@ -74,7 +74,7 @@ class Select extends AbstractQueryBuilder
 
     public function orWhere($expression)
     {
-        $expression = $this->getExpressionAsString($expression);
+        $expression  = $this->getExpressionAsString($expression);
         $this->where = '(' . $this->where . ') OR ' . $expression;
 
         return $this;
@@ -82,7 +82,7 @@ class Select extends AbstractQueryBuilder
 
     public function having($expression)
     {
-        $expression = $this->getExpressionAsString($expression);
+        $expression   = $this->getExpressionAsString($expression);
         $this->having = $expression;
 
         return $this;
@@ -90,7 +90,7 @@ class Select extends AbstractQueryBuilder
 
     public function andHaving($expression)
     {
-        $expression = $this->getExpressionAsString($expression);
+        $expression   = $this->getExpressionAsString($expression);
         $this->having = '(' . $this->having . ') AND ' . $expression;
 
         return $this;

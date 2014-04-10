@@ -2,25 +2,25 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Modules\DBAL\Driver;
 use Modules\DBAL\Platform;
 
 class UpdateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Platform
+     * @var Driver
      */
-    private $platform;
+    private $driver;
 
     public function setUp()
     {
-        $this->platform = $this->getMockBuilder(
-            '\\Modules\\DBAL\\Platform'
-        )->getMock();
+        $platform     = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $this->driver = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
     }
 
     public function testUpdate()
     {
-        $update = new Update($this->platform);
+        $update = new Update($this->driver);
         $update->update('table');
         $update->set('a', '?');
         $update->set('b', '?');

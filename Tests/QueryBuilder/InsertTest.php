@@ -2,23 +2,25 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Modules\DBAL\Driver;
 use Modules\DBAL\Platform;
 
 class InsertTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Platform
+     * @var Driver
      */
-    private $platform;
+    private $driver;
 
     public function setUp()
     {
-        $this->platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $this->driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
     }
 
     public function testEmptyInsert()
     {
-        $insert = new Insert($this->platform);
+        $insert = new Insert($this->driver);
         $insert->into('table');
         $this->assertEquals('INSERT INTO table () VALUES ()', $insert->get());
 

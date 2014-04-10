@@ -2,30 +2,30 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Modules\DBAL\Driver;
 use Modules\DBAL\Platform;
 
 class SelectTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Platform
+     * @var Driver
      */
-    private $platform;
+    private $driver;
 
     public function setUp()
     {
-        $this->platform = $this->getMockBuilder(
-            '\\Modules\\DBAL\\Platform'
-        )->getMock();
+        $platform     = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $this->driver = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
     }
 
     public function testSelect()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't');
         $this->assertEquals('SELECT * FROM table t', $select->get());
 
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('a', 'b')
             ->from('table', 't')
             ->where('a = b')
@@ -38,7 +38,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
             $select->get()
         );
 
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('a')
             ->addSelect('b', 'c')
             ->addSelect('d')
@@ -48,11 +48,11 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectFromSelect()
     {
-        $innerSelect = new Select($this->platform);
+        $innerSelect = new Select($this->driver);
         $innerSelect->select('*');
         $innerSelect->from('table');
 
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('a', 'b')
             ->from($innerSelect, 't');
 
@@ -61,7 +61,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testJoinedSelect()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->join('t', 'other', 'o', 'o.a = t.a');
@@ -74,7 +74,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWithMultipleFromClauses()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->from('other', 'o');
@@ -84,7 +84,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWithOrderByClause()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->orderBy('field', 'DESC')
@@ -92,7 +92,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('SELECT * FROM table t ORDER BY field2 DESC', $select->get());
 
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->orderBy('field', 'DESC')
@@ -106,7 +106,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWithGroupByClause()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->groupBy('field')
@@ -114,7 +114,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('SELECT * FROM table t GROUP BY field2', $select->get());
 
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->groupBy('field', 'field2');
@@ -124,7 +124,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
             $select->get()
         );
 
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->groupBy('field')
@@ -138,7 +138,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWithMultipleWhereClauses()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->where('name = ?')
@@ -151,7 +151,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testToggleLock()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->lockForUpdate();
@@ -165,7 +165,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWithMultipleHavingClauses()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->having('name = ?')
@@ -178,7 +178,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectWithHavingClause()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->groupBy('id')
@@ -190,7 +190,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function testThatUnknownAliasesShouldNotBeJoined()
     {
-        $select = new Select($this->platform);
+        $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
             ->join('foo', 'other', 'o', 'o.a = t.a');

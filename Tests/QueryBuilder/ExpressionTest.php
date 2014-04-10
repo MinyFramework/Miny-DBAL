@@ -35,11 +35,10 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
 
     public function testInWithSelect()
     {
-        $platform = $this->getMockBuilder(
-            '\\Modules\\DBAL\\Platform'
-        )->getMock();
+        $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
 
-        $select = new Select($platform);
+        $select = new Select($driver);
         $select->select('*');
         $select->from('table');
 

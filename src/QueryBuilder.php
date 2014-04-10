@@ -29,7 +29,7 @@ class QueryBuilder
 
     public function select($column)
     {
-        $builder = new Select($this->driver->getPlatform());
+        $builder = new Select($this->driver);
 
         $columns = is_array($column) ? $column : func_get_args();
         $builder->select($columns);
@@ -39,7 +39,7 @@ class QueryBuilder
 
     public function insert($table, array $values = null)
     {
-        $builder = new Insert($this->driver->getPlatform());
+        $builder = new Insert($this->driver);
 
         $builder->into($table);
         if ($values) {
@@ -51,7 +51,7 @@ class QueryBuilder
 
     public function update($table)
     {
-        $builder = new Update($this->driver->getPlatform());
+        $builder = new Update($this->driver);
         $builder->update($table);
 
         return $builder;
@@ -59,7 +59,7 @@ class QueryBuilder
 
     public function delete($from)
     {
-        $builder = new Delete($this->driver->getPlatform());
+        $builder = new Delete($this->driver);
         $builder->from($from);
 
         return $builder;

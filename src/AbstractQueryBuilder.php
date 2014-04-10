@@ -12,16 +12,16 @@ namespace Modules\DBAL;
 abstract class AbstractQueryBuilder
 {
     /**
-     * @var Platform
+     * @var Driver
      */
-    private $platform;
+    private $driver;
 
     /**
-     * @param Platform $platform
+     * @param Driver $driver
      */
-    public function __construct(Platform $platform)
+    public function __construct(Driver $driver)
     {
-        $this->platform = $platform;
+        $this->driver = $driver;
     }
 
     /**
@@ -29,7 +29,7 @@ abstract class AbstractQueryBuilder
      */
     public function getPlatform()
     {
-        return $this->platform;
+        return $this->driver->getPlatform();
     }
 
     public function __toString()

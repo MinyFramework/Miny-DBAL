@@ -21,6 +21,8 @@ class Update extends AbstractQueryBuilder
     public function update($table)
     {
         $this->table = $table;
+
+        return $this;
     }
 
     public function values(array $values)
@@ -28,11 +30,15 @@ class Update extends AbstractQueryBuilder
         foreach ($values as $name => $value) {
             $this->set($name, $value);
         }
+
+        return $this;
     }
 
     public function set($name, $value)
     {
         $this->values[] = $name . '=' . $value;
+
+        return $this;
     }
 
     public function setValues($array)
@@ -40,6 +46,8 @@ class Update extends AbstractQueryBuilder
         foreach ($array as $field => $value) {
             $this->set($field, $value);
         }
+
+        return $this;
     }
 
     public function where($expression)

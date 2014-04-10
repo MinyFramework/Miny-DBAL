@@ -20,16 +20,22 @@ class Insert extends AbstractQueryBuilder
     public function into($table)
     {
         $this->table = $table;
+
+        return $this;
     }
 
     public function values(array $values)
     {
         $this->values = array_merge($this->values, $values);
+
+        return $this;
     }
 
     public function set($name, $value)
     {
         $this->values[$name] = $value;
+
+        return $this;
     }
 
     public function get()

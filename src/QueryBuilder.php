@@ -22,6 +22,11 @@ class QueryBuilder
      */
     private $driver;
 
+    /**
+     * @var AbstractQueryBuilder
+     */
+    private $lastQuery;
+
     public function __construct(Driver $driver)
     {
         $this->driver = $driver;
@@ -29,44 +34,62 @@ class QueryBuilder
 
     public function select($column)
     {
-        $builder = new Select($this->driver);
+        $builder         = new Select($this->driver);
+        $this->lastQuery = $builder;
 
         $columns = is_array($column) ? $column : func_get_args();
-        $builder->select($columns);
 
-        return $builder;
+        return $builder->select($columns);
     }
 
     public function insert($table, array $values = null)
     {
-        $builder = new Insert($this->driver);
+        $builder         = new Insert($this->driver);
+        $this->lastQuery = $builder;
 
-        $builder->into($table);
         if ($values) {
             $builder->values($values);
         }
 
-        return $builder;
+        return $builder->into($table);
     }
 
     public function update($table)
     {
-        $builder = new Update($this->driver);
-        $builder->update($table);
+        $builder         = new Update($this->driver);
+        $this->lastQuery = $builder;
 
-        return $builder;
+        return $builder->update($table);
     }
 
     public function delete($from)
     {
-        $builder = new Delete($this->driver);
-        $builder->from($from);
+        $builder         = new Delete($this->driver);
+        $this->lastQuery = $builder;
 
-        return $builder;
+        return $builder->from($from);
     }
 
     public function expression()
     {
         return new Expression();
+    }
+
+    public function createPositionalParameter($value)
+    {
+        if ($this->lastQuery) {
+            throw new \LogicException('Cannot set parameter when no query is being built.');
+        }
+
+        return $this->lastQuery->createPositionalParameter($value);
+    }
+
+    public function createNamedParameter($value)
+    {
+        if ($this->lastQuery) {
+            throw new \LogicException('Cannot set parameter when no query is being built.');
+        }
+
+        return $this->lastQuery->createNamedParameter($value);
     }
 }

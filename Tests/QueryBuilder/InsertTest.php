@@ -14,8 +14,8 @@ class InsertTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
-        $this->driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
+        $platform     = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $this->driver = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
     }
 
     public function testEmptyInsert()
@@ -23,14 +23,54 @@ class InsertTest extends \PHPUnit_Framework_TestCase
         $insert = new Insert($this->driver);
         $insert->into('table');
         $this->assertEquals('INSERT INTO table () VALUES ()', $insert->get());
+    }
 
-        $insert->values(
-            array(
-                'a' => '?',
-                'b' => '?'
+    public function testInsertWithValue()
+    {
+        $insert = new Insert($this->driver);
+        $insert
+            ->into('table')
+            ->values(
+                array(
+                    'a' => '?',
+                    'b' => '?'
+                )
             )
-        );
-        $insert->set('c', '?');
+            ->set('c', '?');
         $this->assertEquals('INSERT INTO table (a, b, c) VALUES (?, ?, ?)', $insert->get());
+    }
+
+    public function testInsertWithPositionalParameters()
+    {
+        $insert = new Insert($this->driver);
+        $insert
+            ->into('table')
+            ->values(
+                array(
+                    'a' => $insert->createPositionalParameter('foo'),
+                    'b' => $insert->createPositionalParameter('bar')
+                )
+            );
+        $this->assertEquals(
+            'INSERT INTO table (a, b) VALUES (?, ?)',
+            $insert->get()
+        );
+    }
+
+    public function testInsertWithNamedParameters()
+    {
+        $insert = new Insert($this->driver);
+        $insert
+            ->into('table')
+            ->values(
+                array(
+                    'a' => $insert->createNamedParameter('foo'),
+                    'b' => $insert->createNamedParameter('bar')
+                )
+            );
+        $this->assertEquals(
+            'INSERT INTO table (a, b) VALUES (:parameter1, :parameter2)',
+            $insert->get()
+        );
     }
 }

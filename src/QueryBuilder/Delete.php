@@ -20,6 +20,8 @@ class Delete extends AbstractQueryBuilder
     public function from($table)
     {
         $this->table = $table;
+
+        return $this;
     }
 
     public function where($expression)

@@ -27,11 +27,19 @@ class QueryBuilder
      */
     private $lastQuery;
 
+    /**
+     * @param Driver $driver
+     */
     public function __construct(Driver $driver)
     {
         $this->driver = $driver;
     }
 
+    /**
+     * @param $column
+     *
+     * @return Select
+     */
     public function select($column)
     {
         $builder         = new Select($this->driver);
@@ -42,6 +50,12 @@ class QueryBuilder
         return $builder->select($columns);
     }
 
+    /**
+     * @param       $table
+     * @param array $values
+     *
+     * @return Insert
+     */
     public function insert($table, array $values = null)
     {
         $builder         = new Insert($this->driver);
@@ -54,6 +68,11 @@ class QueryBuilder
         return $builder->into($table);
     }
 
+    /**
+     * @param $table
+     *
+     * @return Update
+     */
     public function update($table)
     {
         $builder         = new Update($this->driver);
@@ -62,6 +81,11 @@ class QueryBuilder
         return $builder->update($table);
     }
 
+    /**
+     * @param $from
+     *
+     * @return Delete
+     */
     public function delete($from)
     {
         $builder         = new Delete($this->driver);
@@ -70,11 +94,20 @@ class QueryBuilder
         return $builder->from($from);
     }
 
+    /**
+     * @return Expression
+     */
     public function expression()
     {
         return new Expression();
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     * @throws \LogicException
+     */
     public function createPositionalParameter($value)
     {
         if ($this->lastQuery) {
@@ -84,6 +117,12 @@ class QueryBuilder
         return $this->lastQuery->createPositionalParameter($value);
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     * @throws \LogicException
+     */
     public function createNamedParameter($value)
     {
         if ($this->lastQuery) {

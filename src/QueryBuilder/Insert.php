@@ -48,4 +48,12 @@ class Insert extends AbstractQueryBuilder
 
         return 'INSERT INTO ' . $this->table . ' (' . $keys . ') VALUES (' . $values . ')';
     }
+
+    public function query(array $parameters = array())
+    {
+        parent::query($parameters);
+
+        return $this->driver->lastInsertId();
+    }
+
 }

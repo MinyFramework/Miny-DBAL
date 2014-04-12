@@ -14,7 +14,7 @@ abstract class AbstractQueryBuilder
     /**
      * @var Driver
      */
-    private $driver;
+    protected $driver;
 
     /**
      * @var array

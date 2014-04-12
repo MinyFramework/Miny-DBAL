@@ -89,4 +89,15 @@ class Update extends AbstractQueryBuilder
     {
         return ' SET ' . implode(', ', $this->values);
     }
+
+    public function query(array $parameters = array())
+    {
+        if (empty($this->values)) {
+            // Don't execute empty updates.
+            return;
+        }
+        parent::query($parameters);
+    }
+
+
 }

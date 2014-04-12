@@ -30,8 +30,8 @@ class Module extends \Miny\Modules\Module
                 $this->getConfiguration('driver:class')
             );
             $container->addConstructorArguments(
-                $this->getConfiguration('log') ? null : $container->get('\\Miny\\Log\\NullLog'),
                 $this->getConfiguration('driver:class'),
+                $this->getConfiguration('log') ? null : $container->get('\\Miny\\Log\\NullLog'),
                 $this->getConfiguration('driver:parameters'),
                 $this->getConfiguration('driver:user'),
                 $this->getConfiguration('driver:password'),

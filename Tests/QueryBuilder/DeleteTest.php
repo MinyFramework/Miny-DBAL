@@ -14,8 +14,12 @@ class DeleteTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
-        $this->driver = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
+        $this->driver = $this->getMockForAbstractClass(
+            '\\Modules\\DBAL\\Driver',
+            array(),
+            'DriverMock',
+            false
+        );
     }
 
     public function testDelete()

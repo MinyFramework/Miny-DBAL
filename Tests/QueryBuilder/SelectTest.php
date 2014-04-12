@@ -2,6 +2,7 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Miny\Log\NullLog;
 use Modules\DBAL\Driver;
 use Modules\DBAL\Platform;
 
@@ -14,8 +15,11 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $platform     = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
-        $this->driver = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
+        $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $this->driver   = $this->getMockForAbstractClass(
+            '\\Modules\\DBAL\\Driver',
+            array($platform, new NullLog())
+        );
     }
 
     public function testSelect()

@@ -2,6 +2,8 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Miny\Log\NullLog;
+
 class ExpressionTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -36,7 +38,7 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
     public function testInWithSelect()
     {
         $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
-        $driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform));
+        $driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform, new NullLog()));
 
         $select = new Select($driver);
         $select->select('*');

@@ -10,6 +10,7 @@
 namespace Modules\DBAL;
 
 use InvalidArgumentException;
+use Miny\Log\AbstractLog;
 use Modules\DBAL\Driver\Statement;
 
 abstract class Driver
@@ -24,14 +25,35 @@ abstract class Driver
      */
     private $platform;
 
-    public function __construct(Platform $platform)
+    /**
+     * @var AbstractLog
+     */
+    protected $log;
+
+    /**
+     * @param Platform    $platform
+     * @param AbstractLog $log
+     */
+    public function __construct(Platform $platform, AbstractLog $log)
     {
         $this->platform = $platform;
+        $this->log      = $log;
     }
 
+    /**
+     * @return Platform
+     */
     public function getPlatform()
     {
         return $this->platform;
+    }
+
+    /**
+     * @return AbstractLog
+     */
+    public function getLog()
+    {
+        return $this->log;
     }
 
     public function getQueryBuilder()

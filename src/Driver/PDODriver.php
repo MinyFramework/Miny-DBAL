@@ -9,11 +9,14 @@
 
 namespace Modules\DBAL\Driver;
 
+use Miny\Log\Log;
 use Modules\DBAL\Driver;
 use PDO;
 
 abstract class PDODriver extends Driver
 {
+    const LOG_TAG = 'PDODriver';
+
     /**
      * @var PDO
      */
@@ -42,6 +45,7 @@ abstract class PDODriver extends Driver
 
     public function query($query, array $params = null)
     {
+        $this->log->write(Log::DEBUG, self::LOG_TAG, 'Executing SQL Query: %s', $query);
         if (empty($params)) {
             return $this->pdo->query($query);
         }
@@ -53,6 +57,7 @@ abstract class PDODriver extends Driver
 
     public function prepare($query, array $options = array())
     {
+        $this->log->write(Log::DEBUG, self::LOG_TAG, 'Preparing SQL Query: %s', $query);
         return $this->pdo->prepare($query, $options);
     }
 

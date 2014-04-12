@@ -9,15 +9,21 @@
 
 namespace Modules\DBAL\Driver;
 
+use Miny\Log\AbstractLog;
 use Modules\DBAL\Driver;
 use Modules\DBAL\Platform\MySQL as MySQLPlatform;
 use Modules\DBAL\Platform;
 
 class MySQL extends PDODriver
 {
-    public function __construct(array $params, $user, $password, array $options = array())
-    {
-        parent::__construct(new MySQLPlatform());
+    public function __construct(
+        AbstractLog $log,
+        array $params,
+        $user,
+        $password,
+        array $options = array()
+    ) {
+        parent::__construct(new MySQLPlatform(), $log);
 
         $this->connect($this->constructDsn($params), $user, $password, $options);
     }

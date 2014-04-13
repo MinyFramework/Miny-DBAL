@@ -52,12 +52,30 @@ abstract class PDODriver extends Driver
         $statement = $this->pdo->prepare($query);
         $statement->execute($params);
 
+        $this->logParameters($params);
+
         return $statement;
+    }
+
+    private function logParameters($params)
+    {
+        $params_str = '';
+        foreach ($params as $key => $value) {
+            $params_str .= $key . ': "' . $value . '"';
+        }
+
+        $this->log->write(
+            Log::DEBUG,
+            self::LOG_TAG,
+            'Query parameters: %s',
+            $params_str
+        );
     }
 
     public function prepare($query, array $options = array())
     {
         $this->log->write(Log::DEBUG, self::LOG_TAG, 'Preparing SQL Query: %s', $query);
+
         return $this->pdo->prepare($query, $options);
     }
 

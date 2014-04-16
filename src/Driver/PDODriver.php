@@ -60,8 +60,14 @@ abstract class PDODriver extends Driver
     private function logParameters($params)
     {
         $params_str = '';
+        $first      = true;
         foreach ($params as $key => $value) {
-            $params_str .= $key . ': "' . $value . '"';
+            if ($first) {
+                $first = false;
+            } else {
+                $params_str .= ', ';
+            }
+            $params_str .= "{$key}: \"{$value}\"";
         }
 
         $this->log->write(

@@ -25,17 +25,16 @@ class UpdateTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $update = new Update($this->driver);
-        $update->update('table');
-        $update->set('a', '?');
-        $update->set('b', '?');
-        $update->setValues(
-            array(
-                'c' => '?',
-                'd' => '?'
+        $update->update('table')
+            ->set('a', '?')
+            ->set('b', '?')
+            ->values(
+                array(
+                    'c' => '?',
+                    'd' => '?'
+                )
             )
-        );
-
-        $update->where('c=d');
+            ->where('c=d');
 
         $this->assertEquals('UPDATE table SET a=?, b=?, c=?, d=? WHERE c=d', $update->get());
     }

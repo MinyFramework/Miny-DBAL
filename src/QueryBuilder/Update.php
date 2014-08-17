@@ -28,7 +28,7 @@ class Update extends AbstractQueryBuilder
     public function values(array $values)
     {
         foreach ($values as $name => $value) {
-            $this->set($name, $value);
+            $this->values[] = $name . '=' . $value;
         }
 
         return $this;
@@ -37,15 +37,6 @@ class Update extends AbstractQueryBuilder
     public function set($name, $value)
     {
         $this->values[] = $name . '=' . $value;
-
-        return $this;
-    }
-
-    public function setValues($array)
-    {
-        foreach ($array as $field => $value) {
-            $this->set($field, $value);
-        }
 
         return $this;
     }

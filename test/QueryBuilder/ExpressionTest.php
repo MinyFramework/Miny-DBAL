@@ -17,7 +17,7 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
                 $expr->in('e', array('f', 'g'))
             );
 
-        $this->assertEquals('((a=b AND c<d) OR e IN(f,g))', $expr->get());
+        $this->assertEquals('((a=b AND c<d) OR e IN(f, g))', $expr->get());
     }
 
     public function testNestedConditions()

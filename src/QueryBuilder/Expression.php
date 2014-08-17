@@ -26,9 +26,27 @@ class Expression
 
     private $parts = array();
 
-    public function compare($a, $operator, $b)
+    private function compare($a, $operator, $b)
     {
         $this->parts[] = $a . $operator . $b;
+
+        return $this;
+    }
+
+    private function joinLastParts($num, $glue)
+    {
+        //Splice off the last $num elements from the parts stack and glue them together.
+        $part = implode(
+            $glue,
+            array_splice(
+                $this->parts,
+                -$num,
+                count($this->parts),
+                array()
+            )
+        );
+
+        $this->parts[] = '(' . $part . ')';
 
         return $this;
     }
@@ -38,14 +56,8 @@ class Expression
         if ($expr !== $this) {
             $this->parts[] = $expr;
         }
-        $num   = func_num_args();
-        $parts = array();
-        while ($num-- >= 0) {
-            array_unshift($parts, array_pop($this->parts));
-        }
-        $this->parts[] = '(' . implode(' AND ', $parts) . ')';
 
-        return $this;
+        return $this->joinLastParts(func_num_args() + 1, ' AND ');
     }
 
     public function orX($expr)
@@ -53,14 +65,8 @@ class Expression
         if ($expr !== $this) {
             $this->parts[] = $expr;
         }
-        $num   = func_num_args();
-        $parts = array();
-        while ($num-- >= 0) {
-            array_unshift($parts, array_pop($this->parts));
-        }
-        $this->parts[] = '(' . implode(' OR ', $parts) . ')';
 
-        return $this;
+        return $this->joinLastParts(func_num_args() + 1, ' OR ');
     }
 
     public function lt($a, $b)
@@ -131,30 +137,29 @@ class Expression
         return $this;
     }
 
-    public function in($a, $in)
+    private function implodeInParts($in)
     {
         if (is_array($in)) {
-            $in = implode(',', $in);
+            return implode(', ', $in);
         } elseif ($in instanceof Select) {
-            $in = $in->get();
-        } elseif (!is_string($in)) {
-            $message = 'In expects an array, a Select object or a string.';
-            throw new InvalidArgumentException($message);
+            return $in->get();
+        } elseif (is_string($in)) {
+            return $in;
         }
+
+        throw new InvalidArgumentException('In expects an array, a Select object or a string.');
+    }
+
+    public function in($a, $in)
+    {
+        $in = $this->implodeInParts($in);
 
         return $this->compare($a, self::OPERATOR_IN, '(' . $in . ')');
     }
 
     public function notIn($a, $in)
     {
-        if (is_array($in)) {
-            $in = implode(',', $in);
-        } elseif ($in instanceof Select) {
-            $in = $in->get();
-        } elseif (!is_string($in)) {
-            $message = 'NotIn expects an array, a Select object or a string.';
-            throw new InvalidArgumentException($message);
-        }
+        $in = $this->implodeInParts($in);
 
         return $this->compare($a, self::OPERATOR_NOT_IN, '(' . $in . ')');
     }

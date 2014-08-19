@@ -12,28 +12,13 @@ namespace Modules\DBAL\QueryBuilder;
 use Modules\DBAL\AbstractQueryBuilder;
 use UnexpectedValueException;
 
-class Insert extends AbstractQueryBuilder
+class Insert extends AbstractUpdate
 {
     private $table;
-    private $values = array();
 
     public function into($table)
     {
         $this->table = $table;
-
-        return $this;
-    }
-
-    public function values(array $values)
-    {
-        $this->values = array_merge($this->values, $values);
-
-        return $this;
-    }
-
-    public function set($name, $value)
-    {
-        $this->values[$name] = $value;
 
         return $this;
     }
@@ -55,5 +40,4 @@ class Insert extends AbstractQueryBuilder
 
         return $this->driver->lastInsertId();
     }
-
 }

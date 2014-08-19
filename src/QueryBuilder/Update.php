@@ -12,29 +12,14 @@ namespace Modules\DBAL\QueryBuilder;
 use Modules\DBAL\AbstractQueryBuilder;
 use UnexpectedValueException;
 
-class Update extends AbstractQueryBuilder
+class Update extends AbstractUpdate
 {
     private $table;
-    private $values = array();
     private $where;
 
     public function update($table)
     {
         $this->table = $table;
-
-        return $this;
-    }
-
-    public function values(array $values)
-    {
-        $this->values = array_merge($this->values, $values);
-
-        return $this;
-    }
-
-    public function set($name, $value)
-    {
-        $this->values[$name] = $value;
 
         return $this;
     }
@@ -89,14 +74,5 @@ class Update extends AbstractQueryBuilder
         }
 
         return $set;
-    }
-
-    public function query(array $parameters = array())
-    {
-        if (empty($this->values)) {
-            // Don't execute empty updates.
-            return;
-        }
-        parent::query($parameters);
     }
 }

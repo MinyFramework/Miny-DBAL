@@ -168,7 +168,7 @@ class Select extends AbstractQueryBuilder
 
     public function addOrderBy($field, $order = 'ASC')
     {
-        if ($order !== 'ASC') {
+        if (strtoupper($order) !== 'ASC') {
             $order = 'DESC';
         }
         $this->orderByFields[$field] = $field . ' ' . $order;
@@ -249,7 +249,7 @@ class Select extends AbstractQueryBuilder
             }
 
             if ($condition) {
-                $query .= ' ON ' . $join[3];
+                $query .= ' ON ' . $condition;
             }
 
             $query .= $this->getJoinPart($alias);

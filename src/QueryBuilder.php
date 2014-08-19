@@ -69,14 +69,19 @@ class QueryBuilder
     }
 
     /**
-     * @param $table
+     * @param       $table
+     * @param array $values
      *
      * @return Update
      */
-    public function update($table)
+    public function update($table, array $values = null)
     {
         $builder         = new Update($this->driver);
         $this->lastQuery = $builder;
+
+        if ($values) {
+            $builder->values($values);
+        }
 
         return $builder->update($table);
     }

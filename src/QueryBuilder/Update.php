@@ -27,16 +27,14 @@ class Update extends AbstractQueryBuilder
 
     public function values(array $values)
     {
-        foreach ($values as $name => $value) {
-            $this->values[] = $name . '=' . $value;
-        }
+        $this->values = array_merge($this->values, $values);
 
         return $this;
     }
 
     public function set($name, $value)
     {
-        $this->values[] = $name . '=' . $value;
+        $this->values[$name] = $value;
 
         return $this;
     }
@@ -78,7 +76,19 @@ class Update extends AbstractQueryBuilder
 
     private function getSetPart()
     {
-        return ' SET ' . implode(', ', $this->values);
+        $set = ' SET ';
+
+        $first = true;
+        foreach ($this->values as $key => $value) {
+            if ($first) {
+                $first = false;
+            } else {
+                $set .= ', ';
+            }
+            $set .= $key . '=' . $value;
+        }
+
+        return $set;
     }
 
     public function query(array $parameters = array())
@@ -89,6 +99,4 @@ class Update extends AbstractQueryBuilder
         }
         parent::query($parameters);
     }
-
-
 }

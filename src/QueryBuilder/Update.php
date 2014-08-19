@@ -10,12 +10,14 @@
 namespace Modules\DBAL\QueryBuilder;
 
 use Modules\DBAL\AbstractQueryBuilder;
+use Modules\DBAL\QueryBuilder\Traits\WhereTrait;
 use UnexpectedValueException;
 
 class Update extends AbstractUpdate
 {
+    use WhereTrait;
+
     private $table;
-    private $where;
 
     public function update($table)
     {
@@ -24,30 +26,11 @@ class Update extends AbstractUpdate
         return $this;
     }
 
-    public function where($expression)
-    {
-        if ($expression instanceof Expression) {
-            $expression = $expression->get();
-        }
-        $this->where = $expression;
-
-        return $this;
-    }
-
     public function get()
     {
         return $this->getUpdatePart() .
         $this->getSetPart() .
-        $this->getWherePart();
-    }
-
-    private function getWherePart()
-    {
-        if (!$this->where) {
-            return '';
-        }
-
-        return ' WHERE ' . $this->where;
+        $this->getWhere();
     }
 
     private function getUpdatePart()

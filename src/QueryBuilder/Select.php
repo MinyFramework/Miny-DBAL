@@ -9,11 +9,25 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Modules\DBAL\AbstractQueryBuilder;
+use Modules\DBAL\QueryBuilder\Traits\GroupByTrait;
+use Modules\DBAL\QueryBuilder\Traits\HavingTrait;
+use Modules\DBAL\QueryBuilder\Traits\JoinTrait;
+use Modules\DBAL\QueryBuilder\Traits\LimitTrait;
+use Modules\DBAL\QueryBuilder\Traits\OrderByTrait;
+use Modules\DBAL\QueryBuilder\Traits\WhereTrait;
 use UnexpectedValueException;
 
-class Select extends AbstractSelect
+class Select extends AbstractQueryBuilder
 {
-    private $columns = array();
+    use WhereTrait;
+    use HavingTrait;
+    use JoinTrait;
+    use LimitTrait;
+    use OrderByTrait;
+    use GroupByTrait;
+
+    private $columns = [];
     private $lock = false;
     private $from;
 
@@ -38,7 +52,7 @@ class Select extends AbstractSelect
             $from = '(' . $from->get() . ')';
         }
 
-        $this->from[] = array($from, $alias);
+        $this->from[] = [$from, $alias];
 
         return $this;
     }
@@ -54,9 +68,9 @@ class Select extends AbstractSelect
     {
         return $this->getSelectPart() .
         $this->getFromPart() .
-        $this->getWherePart() .
+        $this->getWhere() .
         $this->getGroupByPart() .
-        $this->getHavingPart() .
+        $this->getHaving() .
         $this->getOrderByPart() .
         $this->getLimitingPart() .
         $this->getLockPart();
@@ -67,7 +81,7 @@ class Select extends AbstractSelect
         if (empty($this->from)) {
             throw new UnexpectedValueException('Select query must have a FROM clause.');
         }
-        $fromParts = array();
+        $fromParts = [];
         foreach ($this->from as $from) {
             $query = $from[0];
             if ($from[1] && $from[1] !== $from[0]) {

@@ -16,7 +16,7 @@ class InsertTest extends \PHPUnit_Framework_TestCase
     {
         $this->driver = $this->getMockForAbstractClass(
             '\\Modules\\DBAL\\Driver',
-            array(),
+            [],
             'DriverMock',
             false
         );
@@ -35,10 +35,10 @@ class InsertTest extends \PHPUnit_Framework_TestCase
         $insert
             ->into('table')
             ->values(
-                array(
+                [
                     'a' => '?',
                     'b' => '?'
-                )
+                ]
             )
             ->set('c', '?');
         $this->assertEquals('INSERT INTO table (a, b, c) VALUES (?, ?, ?)', $insert->get());
@@ -50,10 +50,10 @@ class InsertTest extends \PHPUnit_Framework_TestCase
         $insert
             ->into('table')
             ->values(
-                array(
+                [
                     'a' => $insert->createPositionalParameter('foo'),
                     'b' => $insert->createPositionalParameter('bar')
-                )
+                ]
             );
         $this->assertEquals(
             'INSERT INTO table (a, b) VALUES (?, ?)',
@@ -67,10 +67,10 @@ class InsertTest extends \PHPUnit_Framework_TestCase
         $insert
             ->into('table')
             ->values(
-                array(
+                [
                     'a' => $insert->createNamedParameter('foo'),
                     'b' => $insert->createNamedParameter('bar')
-                )
+                ]
             );
         $this->assertEquals(
             'INSERT INTO table (a, b) VALUES (:parameter1, :parameter2)',

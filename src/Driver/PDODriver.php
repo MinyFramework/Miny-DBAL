@@ -22,14 +22,14 @@ abstract class PDODriver extends Driver
      */
     private $pdo;
 
-    protected function connect($dsn, $username, $password, array $options = array())
+    protected function connect($dsn, $username, $password, array $options = [])
     {
         $this->pdo = new PDO($dsn, $username, $password, $options);
 
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->pdo->setAttribute(
             PDO::ATTR_STATEMENT_CLASS,
-            array(__NAMESPACE__ . '\\PDOStatement', array())
+            [__NAMESPACE__ . '\\PDOStatement', []]
         );
     }
 
@@ -78,7 +78,7 @@ abstract class PDODriver extends Driver
         );
     }
 
-    public function prepare($query, array $options = array())
+    public function prepare($query, array $options = [])
     {
         $this->log->write(Log::DEBUG, self::LOG_TAG, 'Preparing SQL Query: %s', $query);
 

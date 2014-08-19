@@ -24,7 +24,16 @@ class Expression
     const OPERATOR_LIKE     = ' LIKE ';
     const OPERATOR_NOT_LIKE = ' NOT LIKE ';
 
-    private $parts = array();
+    private $parts = [];
+
+    public static function toString($expression)
+    {
+        if ($expression instanceof Expression) {
+            return $expression->get();
+        }
+
+        return $expression;
+    }
 
     private function compare($a, $operator, $b)
     {
@@ -42,7 +51,7 @@ class Expression
                 $this->parts,
                 -$num,
                 count($this->parts),
-                array()
+                []
             )
         );
 

@@ -19,7 +19,7 @@ abstract class AbstractQueryBuilder
     /**
      * @var array
      */
-    private $parameters = array();
+    private $parameters = [];
 
     private $parameterCounter = 0;
 
@@ -49,7 +49,7 @@ abstract class AbstractQueryBuilder
         $this->parameters[$num] = $value;
     }
 
-    public function query(array $parameters = array())
+    public function query(array $parameters = [])
     {
         return $this->driver->query($this->get(), $parameters + $this->parameters);
     }

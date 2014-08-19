@@ -10,10 +10,13 @@
 namespace Modules\DBAL\QueryBuilder;
 
 use Modules\DBAL\AbstractQueryBuilder;
+use Modules\DBAL\QueryBuilder\Traits\WhereTrait;
 use UnexpectedValueException;
 
-class Delete extends AbstractSelect
+class Delete extends AbstractQueryBuilder
 {
+    use WhereTrait;
+
     private $table;
 
     public function from($table)
@@ -25,7 +28,7 @@ class Delete extends AbstractSelect
 
     public function get()
     {
-        return $this->getFromPart() . $this->getWherePart();
+        return $this->getFromPart() . $this->getWhere();
     }
 
     private function getFromPart()

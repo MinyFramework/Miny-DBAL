@@ -14,7 +14,7 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
             ->andX(
                 $expr->lt('c', 'd')
             )->orX(
-                $expr->in('e', array('f', 'g'))
+                $expr->in('e', ['f', 'g'])
             );
 
         $this->assertEquals('((a=b AND c<d) OR e IN(f, g))', $expr->get());
@@ -38,7 +38,7 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
     public function testInWithSelect()
     {
         $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
-        $driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', array($platform, new NullLog()));
+        $driver   = $this->getMockForAbstractClass('\\Modules\\DBAL\\Driver', [$platform, new NullLog()]);
 
         $select = new Select($driver);
         $select->select('*');

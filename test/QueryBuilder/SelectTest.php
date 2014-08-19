@@ -18,7 +18,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
         $this->driver   = $this->getMockForAbstractClass(
             '\\Modules\\DBAL\\Driver',
-            array($platform, new NullLog())
+            [$platform, new NullLog()]
         );
     }
 

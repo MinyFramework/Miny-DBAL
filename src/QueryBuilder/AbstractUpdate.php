@@ -13,7 +13,7 @@ use Modules\DBAL\AbstractQueryBuilder;
 
 abstract class AbstractUpdate extends AbstractQueryBuilder
 {
-    protected $values = array();
+    protected $values = [];
 
     public function values(array $values)
     {
@@ -29,7 +29,7 @@ abstract class AbstractUpdate extends AbstractQueryBuilder
         return $this;
     }
 
-    public function query(array $parameters = array())
+    public function query(array $parameters = [])
     {
         if (empty($this->values)) {
             // Don't execute empty updates.

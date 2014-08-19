@@ -11,8 +11,8 @@ namespace Modules\DBAL\Driver;
 
 use Miny\Log\AbstractLog;
 use Modules\DBAL\Driver;
-use Modules\DBAL\Platform\MySQL as MySQLPlatform;
 use Modules\DBAL\Platform;
+use Modules\DBAL\Platform\MySQL as MySQLPlatform;
 
 class MySQL extends PDODriver
 {
@@ -21,7 +21,7 @@ class MySQL extends PDODriver
         array $params,
         $user,
         $password,
-        array $options = array()
+        array $options = []
     ) {
         parent::__construct(new MySQLPlatform(), $log);
 
@@ -35,7 +35,7 @@ class MySQL extends PDODriver
         }
         $dsn = 'mysql:';
 
-        $parts = array('host', 'port', 'dbname', 'unix_socket', 'charset');
+        $parts = ['host', 'port', 'dbname', 'unix_socket', 'charset'];
         foreach ($parts as $part) {
             if (isset($params[$part])) {
                 $dsn .= $part . '=' . $params[$part] . ';';

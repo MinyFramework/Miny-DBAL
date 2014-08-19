@@ -34,7 +34,7 @@ class Insert extends AbstractUpdate
         return 'INSERT INTO ' . $this->table . ' (' . $keys . ') VALUES (' . $values . ')';
     }
 
-    public function query(array $parameters = array())
+    public function query(array $parameters = [])
     {
         parent::query($parameters);
 

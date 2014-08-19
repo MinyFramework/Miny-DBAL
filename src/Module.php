@@ -15,9 +15,9 @@ class Module extends \Miny\Modules\Module
 {
     public function defaultConfiguration()
     {
-        return array(
+        return [
             'log' => true
-        );
+        ];
     }
 
 

@@ -16,7 +16,7 @@ class UpdateTest extends \PHPUnit_Framework_TestCase
     {
         $this->driver = $this->getMockForAbstractClass(
             '\\Modules\\DBAL\\Driver',
-            array(),
+            [],
             'DriverMock',
             false
         );
@@ -29,10 +29,10 @@ class UpdateTest extends \PHPUnit_Framework_TestCase
             ->set('a', '?')
             ->set('b', '?')
             ->values(
-                array(
+                [
                     'c' => '?',
                     'd' => '?'
-                )
+                ]
             )
             ->where('c=d');
 

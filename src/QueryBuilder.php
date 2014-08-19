@@ -115,7 +115,7 @@ class QueryBuilder
      */
     public function createPositionalParameter($value)
     {
-        if ($this->lastQuery) {
+        if (!$this->lastQuery) {
             throw new \LogicException('Cannot set parameter when no query is being built.');
         }
 
@@ -130,7 +130,7 @@ class QueryBuilder
      */
     public function createNamedParameter($value)
     {
-        if ($this->lastQuery) {
+        if (!$this->lastQuery) {
             throw new \LogicException('Cannot set parameter when no query is being built.');
         }
 

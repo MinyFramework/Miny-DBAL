@@ -17,17 +17,14 @@ trait OrderByTrait
 
     public function orderBy($field, $order = 'ASC')
     {
-        if (strtoupper($order) !== 'ASC') {
-            $order = 'DESC';
-        }
-        $this->orderByFields = [$field => $field . ' ' . $order];
+        $this->orderByFields = [];
 
-        return $this;
+        return $this->addOrderBy($field, $order);
     }
 
     public function addOrderBy($field, $order = 'ASC')
     {
-        if ($order !== 'ASC') {
+        if (strtoupper($order) !== 'ASC') {
             $order = 'DESC';
         }
         $this->orderByFields[$field] = $field . ' ' . $order;

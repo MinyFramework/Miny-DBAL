@@ -24,8 +24,7 @@ trait GroupByTrait
 
     public function addGroupBy($field)
     {
-        $fields = is_array($field) ? $field : func_get_args();
-
+        $fields              = is_array($field) ? $field : func_get_args();
         $this->groupByFields = array_merge($this->groupByFields, $fields);
 
         return $this;

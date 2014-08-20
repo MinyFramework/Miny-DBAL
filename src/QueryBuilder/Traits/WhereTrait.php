@@ -17,14 +17,13 @@ trait WhereTrait
 
     public function where($expression)
     {
-        $this->where = Expression::toString($expression);
+        $this->where = $expression;
 
         return $this;
     }
 
     public function andWhere($expression)
     {
-        $expression  = Expression::toString($expression);
         $this->where = '(' . $this->where . ') AND ' . $expression;
 
         return $this;
@@ -32,7 +31,6 @@ trait WhereTrait
 
     public function orWhere($expression)
     {
-        $expression  = Expression::toString($expression);
         $this->where = '(' . $this->where . ') OR ' . $expression;
 
         return $this;

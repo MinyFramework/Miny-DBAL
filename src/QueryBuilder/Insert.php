@@ -31,7 +31,7 @@ class Insert extends AbstractUpdate
         $keys   = implode(', ', array_keys($this->values));
         $values = implode(', ', $this->values);
 
-        return 'INSERT INTO ' . $this->table . ' (' . $keys . ') VALUES (' . $values . ')';
+        return "INSERT INTO {$this->table} ({$keys}) VALUES ({$values})";
     }
 
     public function query(array $parameters = [])

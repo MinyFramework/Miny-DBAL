@@ -9,22 +9,19 @@
 
 namespace Modules\DBAL\QueryBuilder\Traits;
 
-use Modules\DBAL\QueryBuilder\Expression;
-
 trait HavingTrait
 {
     private $having;
 
     public function having($expression)
     {
-        $this->having = Expression::toString($expression);
+        $this->having = $expression;
 
         return $this;
     }
 
     public function andHaving($expression)
     {
-        $expression  = Expression::toString($expression);
         $this->having = '(' . $this->having . ') AND ' . $expression;
 
         return $this;
@@ -32,7 +29,6 @@ trait HavingTrait
 
     public function orHaving($expression)
     {
-        $expression  = Expression::toString($expression);
         $this->having = '(' . $this->having . ') OR ' . $expression;
 
         return $this;

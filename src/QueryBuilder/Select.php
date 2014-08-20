@@ -81,21 +81,27 @@ class Select extends AbstractQueryBuilder
         if (empty($this->from)) {
             throw new UnexpectedValueException('Select query must have a FROM clause.');
         }
-        $fromParts = [];
-        foreach ($this->from as $from) {
-            $query = $from[0];
-            if ($from[1] && $from[1] !== $from[0]) {
-                $query .= ' ' . $from[1];
+        $first = true;
+        $from  = ' FROM ';
+        foreach ($this->from as $part) {
+            if ($first) {
+                $first = false;
             } else {
-                $from[1] = $from[0];
+                $from .= ', ';
             }
 
-            $query .= $this->getJoinPart($from[1]);
+            list($table, $alias) = $part;
+            if ($alias && $alias !== $table) {
+                $table .= ' ' . $alias;
+            } else {
+                $alias = $table;
+            }
 
-            $fromParts[] = $query;
+            $table .= $this->getJoinPart($alias);
+            $from .= $table;
         }
 
-        return ' FROM ' . implode(', ', $fromParts);
+        return $from;
     }
 
 

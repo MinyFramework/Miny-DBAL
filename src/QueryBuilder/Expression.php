@@ -26,15 +26,6 @@ class Expression
 
     private $parts = [];
 
-    public static function toString($expression)
-    {
-        if ($expression instanceof Expression) {
-            return $expression->get();
-        }
-
-        return $expression;
-    }
-
     private function compare($a, $operator, $b)
     {
         $this->parts[] = $a . $operator . $b;
@@ -176,5 +167,10 @@ class Expression
     public function get()
     {
         return $this->parts[0];
+    }
+
+    public function __toString()
+    {
+        return $this->get();
     }
 }

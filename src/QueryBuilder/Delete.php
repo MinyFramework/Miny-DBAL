@@ -10,12 +10,16 @@
 namespace Modules\DBAL\QueryBuilder;
 
 use Modules\DBAL\AbstractQueryBuilder;
+use Modules\DBAL\QueryBuilder\Traits\LimitTrait;
+use Modules\DBAL\QueryBuilder\Traits\OrderByTrait;
 use Modules\DBAL\QueryBuilder\Traits\WhereTrait;
 use UnexpectedValueException;
 
 class Delete extends AbstractQueryBuilder
 {
     use WhereTrait;
+    use LimitTrait;
+    use OrderByTrait;
 
     private $table;
 
@@ -28,7 +32,10 @@ class Delete extends AbstractQueryBuilder
 
     public function get()
     {
-        return $this->getFromPart() . $this->getWhere();
+        return $this->getFromPart() .
+        $this->getWhere() .
+        $this->getOrderByPart() .
+        $this->getLimitingPart();
     }
 
     private function getFromPart()

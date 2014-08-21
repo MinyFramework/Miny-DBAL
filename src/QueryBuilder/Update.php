@@ -9,13 +9,16 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
-use Modules\DBAL\AbstractQueryBuilder;
+use Modules\DBAL\QueryBuilder\Traits\LimitTrait;
+use Modules\DBAL\QueryBuilder\Traits\OrderByTrait;
 use Modules\DBAL\QueryBuilder\Traits\WhereTrait;
 use UnexpectedValueException;
 
 class Update extends AbstractUpdate
 {
     use WhereTrait;
+    use LimitTrait;
+    use OrderByTrait;
 
     private $table;
 
@@ -30,7 +33,9 @@ class Update extends AbstractUpdate
     {
         return $this->getUpdatePart() .
         $this->getSetPart() .
-        $this->getWhere();
+        $this->getWhere() .
+        $this->getOrderByPart() .
+        $this->getLimitingPart();
     }
 
     private function getUpdatePart()

@@ -2,6 +2,7 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
+use Miny\Log\NullLog;
 use Modules\DBAL\Driver;
 use Modules\DBAL\Platform;
 
@@ -14,11 +15,10 @@ class DeleteTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->driver = $this->getMockForAbstractClass(
+        $platform = $this->getMockForAbstractClass('\\Modules\\DBAL\\Platform');
+        $this->driver   = $this->getMockForAbstractClass(
             '\\Modules\\DBAL\\Driver',
-            [],
-            'DriverMock',
-            false
+            [$platform, new NullLog()]
         );
     }
 

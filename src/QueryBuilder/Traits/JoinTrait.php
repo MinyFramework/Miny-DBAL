@@ -9,8 +9,6 @@
 
 namespace Modules\DBAL\QueryBuilder\Traits;
 
-use Modules\DBAL\QueryBuilder\Expression;
-
 trait JoinTrait
 {
     private $joins = [];

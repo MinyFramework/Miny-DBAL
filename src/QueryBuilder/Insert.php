@@ -9,7 +9,6 @@
 
 namespace Modules\DBAL\QueryBuilder;
 
-use Modules\DBAL\AbstractQueryBuilder;
 use UnexpectedValueException;
 
 class Insert extends AbstractUpdate

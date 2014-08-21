@@ -91,16 +91,16 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
-            ->orderBy('field', 'DESC')
-            ->orderBy('field2', 'DESC');
+            ->orderBy('field', 'desc')
+            ->orderBy('field2', 'desc');
 
         $this->assertEquals('SELECT * FROM table t ORDER BY field2 DESC', $select->get());
 
         $select = new Select($this->driver);
         $select->select('*')
             ->from('table', 't')
-            ->orderBy('field', 'DESC')
-            ->addOrderBy('field2');
+            ->orderBy('field', 'desc')
+            ->addOrderBy('field2', 'asc');
 
         $this->assertEquals(
             'SELECT * FROM table t ORDER BY field DESC, field2 ASC',

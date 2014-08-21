@@ -24,7 +24,8 @@ trait OrderByTrait
 
     public function addOrderBy($field, $order = 'ASC')
     {
-        if (strtoupper($order) !== 'ASC') {
+        $order = strtoupper($order);
+        if ($order !== 'ASC') {
             $order = 'DESC';
         }
         $this->orderByFields[$field] = $field . ' ' . $order;

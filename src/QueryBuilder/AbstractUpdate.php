@@ -28,13 +28,4 @@ abstract class AbstractUpdate extends AbstractQueryBuilder
 
         return $this;
     }
-
-    public function query(array $parameters = [])
-    {
-        if (empty($this->values)) {
-            // Don't execute empty updates.
-            return;
-        }
-        parent::query($parameters);
-    }
 }

@@ -56,14 +56,14 @@ abstract class AbstractQueryBuilder
 
     public function createPositionalParameter($value)
     {
-        $this->setParameter(++$this->parameterCounter, $value);
+        $this->setParameter($this->parameterCounter++, $value);
 
         return '?';
     }
 
     public function createNamedParameter($value)
     {
-        $name = ':parameter' . ++$this->parameterCounter;
+        $name = ':parameter' . $this->parameterCounter++;
         $this->setParameter($name, $value);
 
         return $name;

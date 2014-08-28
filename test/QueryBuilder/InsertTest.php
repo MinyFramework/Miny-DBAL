@@ -73,7 +73,7 @@ class InsertTest extends \PHPUnit_Framework_TestCase
                 ]
             );
         $this->assertEquals(
-            'INSERT INTO table (a, b) VALUES (:parameter1, :parameter2)',
+            'INSERT INTO table (a, b) VALUES (:parameter0, :parameter1)',
             $insert->get()
         );
     }

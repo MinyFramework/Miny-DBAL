@@ -21,6 +21,7 @@ abstract class PDODriver extends Driver
      * @var PDO
      */
     private $pdo;
+    private $transactionCounter = 0;
 
     protected function connect($dsn, $username, $password, array $options = [])
     {
@@ -87,17 +88,32 @@ abstract class PDODriver extends Driver
 
     public function beginTransaction()
     {
-        return $this->pdo->beginTransaction();
+        if (!$this->transactionCounter++) {
+            return $this->pdo->beginTransaction();
+        }
+
+        return $this->transactionCounter >= 0;
     }
 
     public function commit()
     {
-        return $this->pdo->commit();
+        if (--$this->transactionCounter === 0) {
+            return $this->pdo->commit();
+        }
+
+        return $this->transactionCounter >= 0;
     }
 
     public function rollback()
     {
-        return $this->pdo->rollback();
+        if ($this->transactionCounter >= 0) {
+            $this->transactionCounter = 0;
+
+            return $this->pdo->rollback();
+        }
+        $this->transactionCounter = 0;
+
+        return false;
     }
 
     public function quoteLiteral($literal, $type = null)

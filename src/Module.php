@@ -16,7 +16,8 @@ class Module extends \Miny\Modules\Module
     public function defaultConfiguration()
     {
         return [
-            'log' => true
+            'log' => true,
+            'startUpQueries' => []
         ];
     }
 
@@ -29,6 +30,12 @@ class Module extends \Miny\Modules\Module
                 __NAMESPACE__ . '\\Driver',
                 $this->getConfiguration('driver:class')
             );
+            $startUpQueries = $this->getConfiguration('startUpQueries');
+            $container->addCallback($this->getConfiguration('driver:class'), function (Driver $driver, $container) use ($startUpQueries) {
+                foreach ((array)$startUpQueries as $query) {
+                    $driver->query($query);
+                }
+            });
             $container->addConstructorArguments(
                 $this->getConfiguration('driver:class'),
                 $this->getConfiguration('log') ? null : $container->get('\\Miny\\Log\\NullLog'),

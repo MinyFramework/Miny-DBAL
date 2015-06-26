@@ -13,9 +13,20 @@ trait HavingTrait
 {
     private $having;
 
-    public function having($expression)
+    public function setHaving($expression)
     {
         $this->having = $expression;
+
+        return $this;
+    }
+
+    public function having($expression)
+    {
+        if ($this->having === null) {
+            $this->having = $expression;
+        } else {
+            $this->andHaving($expression);
+        }
 
         return $this;
     }

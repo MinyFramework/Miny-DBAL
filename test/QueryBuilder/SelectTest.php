@@ -92,7 +92,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $select->select('*')
             ->from('table', 't')
             ->orderBy('field', 'desc')
-            ->orderBy('field2', 'desc');
+            ->setOrderBy('field2', 'desc');
 
         $this->assertEquals('SELECT * FROM table t ORDER BY field2 DESC', $select->get());
 
@@ -100,7 +100,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $select->select('*')
             ->from('table', 't')
             ->orderBy('field', 'desc')
-            ->addOrderBy('field2', 'asc');
+            ->orderBy('field2', 'asc');
 
         $this->assertEquals(
             'SELECT * FROM table t ORDER BY field DESC, field2 ASC',
@@ -114,7 +114,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $select->select('*')
             ->from('table', 't')
             ->groupBy('field')
-            ->groupBy('field2');
+            ->setGroupBy('field2');
 
         $this->assertEquals('SELECT * FROM table t GROUP BY field2', $select->get());
 
@@ -132,7 +132,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
         $select->select('*')
             ->from('table', 't')
             ->groupBy('field')
-            ->addGroupBy('field2');
+            ->groupBy('field2');
 
         $this->assertEquals(
             'SELECT * FROM table t GROUP BY field, field2',

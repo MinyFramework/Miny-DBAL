@@ -15,10 +15,10 @@ trait JoinTrait
 
     private function addJoin($type, $left, $table, $alias, $condition = null)
     {
-        if (!isset($this->joins[$left])) {
-            $this->joins[$left] = [];
+        if (!isset($this->joins[ $left ])) {
+            $this->joins[ $left ] = [];
         }
-        $this->joins[$left][] = [
+        $this->joins[ $left ][] = [
             $type,
             $table,
             $alias,
@@ -50,26 +50,27 @@ trait JoinTrait
 
     public function getJoinPart($alias)
     {
+        if (!isset($this->joins[ $alias ])) {
+            return '';
+        }
+
         $query = '';
+        foreach ($this->joins[ $alias ] as $join) {
+            list($type, $table, $alias, $condition) = $join;
 
-        if (isset($this->joins[$alias])) {
-            foreach ($this->joins[$alias] as $join) {
-                list($type, $table, $alias, $condition) = $join;
+            $query .= $type . $table;
 
-                $query .= $type . $table;
-
-                if ($alias && $alias !== $table) {
-                    $query .= ' ' . $alias;
-                } else {
-                    $alias = $table;
-                }
-
-                if ($condition) {
-                    $query .= ' ON ' . $condition;
-                }
-
-                $query .= $this->getJoinPart($alias);
+            if ($alias && $alias !== $table) {
+                $query .= ' ' . $alias;
+            } else {
+                $alias = $table;
             }
+
+            if ($condition) {
+                $query .= ' ON ' . $condition;
+            }
+
+            $query .= $this->getJoinPart($alias);
         }
 
         return $query;

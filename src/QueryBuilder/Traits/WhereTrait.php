@@ -13,9 +13,20 @@ trait WhereTrait
 {
     private $where;
 
-    public function where($expression)
+    public function setWhere($expression)
     {
         $this->where = $expression;
+
+        return $this;
+    }
+
+    public function where($expression)
+    {
+        if ($this->where === null) {
+            $this->where = $expression;
+        } else {
+            $this->andWhere($expression);
+        }
 
         return $this;
     }

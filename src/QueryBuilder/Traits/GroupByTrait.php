@@ -15,14 +15,14 @@ trait GroupByTrait
 {
     private $groupByFields = [];
 
-    public function groupBy($field)
+    public function setGroupBy($field)
     {
         $this->groupByFields = is_array($field) ? $field : func_get_args();
 
         return $this;
     }
 
-    public function addGroupBy($field)
+    public function groupBy($field)
     {
         $fields              = is_array($field) ? $field : func_get_args();
         $this->groupByFields = array_merge($this->groupByFields, $fields);

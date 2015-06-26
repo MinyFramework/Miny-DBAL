@@ -15,14 +15,14 @@ trait OrderByTrait
 {
     private $orderByFields = [];
 
-    public function orderBy($field, $order = 'ASC')
+    public function setOrderBy($field, $order = 'ASC')
     {
         $this->orderByFields = [];
 
-        return $this->addOrderBy($field, $order);
+        return $this->orderBy($field, $order);
     }
 
-    public function addOrderBy($field, $order = 'ASC')
+    public function orderBy($field, $order = 'ASC')
     {
         $order = strtoupper($order);
         if ($order !== 'ASC') {

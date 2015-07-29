@@ -65,7 +65,15 @@ abstract class Driver
         return $this->queryBuilder;
     }
 
-    public function inTransaction($function)
+    /**
+     * Call a function guarded by a transaction.
+     *
+     * @param callable $function The function to guard. First argument is the driver, the rest are the arguments
+     * passed to the method.
+     *
+     * @return mixed The return value of the guarded function
+     */
+    public function inTransaction(callable $function)
     {
         if (!is_callable($function)) {
             throw new InvalidArgumentException('$function must be callable.');
@@ -73,13 +81,14 @@ abstract class Driver
         $this->beginTransaction();
         try {
             if (func_num_args() === 1) {
-                $function($this);
+                $returnValue = $function($this);
             } else {
                 $args    = func_get_args();
                 $args[0] = $this;
-                call_user_func_array($function, $args);
+                $returnValue = call_user_func_array($function, $args);
             }
             $this->commit();
+            return $returnValue;
         } catch (\PDOException $e) {
             $this->rollback();
             throw $e;

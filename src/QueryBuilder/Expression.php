@@ -91,11 +91,19 @@ class Expression
 
     public function eq($a, $b)
     {
+        if (is_array($b)) {
+            return $this->in($a, $b);
+        }
+
         return $this->compare($a, self::OPERATOR_EQ, $b);
     }
 
     public function neq($a, $b)
     {
+        if (is_array($b)) {
+            return $this->notIn($a, $b);
+        }
+
         return $this->compare($a, self::OPERATOR_NEQ, $b);
     }
 

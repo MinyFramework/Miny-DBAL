@@ -93,8 +93,8 @@ class QueryBuilder
      */
     public function delete($from)
     {
-        $builder         = new Delete($this->driver);
-        $this->lastQuery = $builder;
+        $builder               = new Delete($this->driver);
+        $this->lastQuery       = $builder;
 
         return $builder->from($from);
     }

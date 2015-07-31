@@ -21,6 +21,14 @@ abstract class AbstractQueryBuilder
      */
     private $parameters = [];
 
+    /**
+     * @var null|boolean
+     */
+    private $namedParameters;
+
+    /**
+     * Number of query parameters
+     */
     private $parameterCounter = 0;
 
     /**
@@ -46,7 +54,9 @@ abstract class AbstractQueryBuilder
 
     public function setParameter($num, $value)
     {
-        $this->parameters[$num] = $value;
+        $this->parameters[ $num ] = $value;
+
+        return $num;
     }
 
     public function query(array $parameters = [])
@@ -56,6 +66,16 @@ abstract class AbstractQueryBuilder
 
     public function createPositionalParameter($value)
     {
+        if ($this->namedParameters === true) {
+            throw new \LogicException('Cannot mix named and positional parameters in a query.');
+        } else {
+            $this->namedParameters = false;
+        }
+
+        if (is_array($value)) {
+            return array_map([$this, 'createPositionalParameter'], $value);
+        }
+
         $this->setParameter($this->parameterCounter++, $value);
 
         return '?';
@@ -63,10 +83,19 @@ abstract class AbstractQueryBuilder
 
     public function createNamedParameter($value)
     {
-        $name = ':parameter' . $this->parameterCounter++;
-        $this->setParameter($name, $value);
+        if ($this->namedParameters === false) {
+            throw new \LogicException('Cannot mix named and positional parameters in a query.');
+        } else {
+            $this->namedParameters = true;
+        }
 
-        return $name;
+        if (is_array($value)) {
+            return array_map([$this, 'createNamedParameter'], $value);
+        }
+
+        $name = ':parameter' . $this->parameterCounter++;
+
+        return $this->setParameter($name, $value);
     }
 
     abstract public function get();

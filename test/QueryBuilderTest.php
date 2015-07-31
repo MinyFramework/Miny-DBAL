@@ -57,4 +57,24 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             $expr
         );
     }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testParameterTypesCannotBeMixed()
+    {
+        $this->builder->select('*');
+        $this->assertEquals('?', $this->builder->createPositionalParameter(0));
+        $this->assertEquals(':parameter3', $this->builder->createNamedParameter(0));
+    }
+
+    public function testParameterMethods()
+    {
+        $this->builder->select('*');
+        $this->assertEquals('?', $this->builder->createPositionalParameter(0));
+        $this->assertEquals(['?', '?'], $this->builder->createPositionalParameter([0, 1]));
+        $this->builder->select('*');
+        $this->assertEquals(':parameter0', $this->builder->createNamedParameter(0));
+        $this->assertEquals([':parameter1', ':parameter2'], $this->builder->createNamedParameter([0, 1]));
+    }
 }

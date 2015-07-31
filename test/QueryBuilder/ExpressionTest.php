@@ -25,12 +25,14 @@ class ExpressionTest extends \PHPUnit_Framework_TestCase
         $expr = new Expression();
         $expr->eq('a', 'b')
              ->andX(
+                 $expr->eq('c', ['d']),
                  $expr->eq('c', ['d', 'e']),
                  $expr->neq('f', 'g'),
+                 $expr->neq('f', ['g']),
                  $expr->neq('h', ['i', 'j'])
              );
 
-        $this->assertEquals('(a=b AND c IN(d, e) AND f<>g AND h NOT IN(i, j))', $expr->get());
+        $this->assertEquals('(a=b AND c=d AND c IN(d, e) AND f<>g AND f<>g AND h NOT IN(i, j))', $expr->get());
     }
 
     public function testNestedConditions()

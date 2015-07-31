@@ -92,6 +92,9 @@ class Expression
     public function eq($a, $b)
     {
         if (is_array($b)) {
+            if(count($b) === 1) {
+                return $this->eq($a, current($b));
+            }
             return $this->in($a, $b);
         }
 
@@ -101,6 +104,9 @@ class Expression
     public function neq($a, $b)
     {
         if (is_array($b)) {
+            if(count($b) === 1) {
+                return $this->neq($a, current($b));
+            }
             return $this->notIn($a, $b);
         }
 

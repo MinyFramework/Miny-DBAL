@@ -28,7 +28,7 @@ class Select extends AbstractQueryBuilder
     use GroupByTrait;
 
     private $columns = [];
-    private $lock = false;
+    private $lock    = false;
     private $from;
 
     public function select($column)
@@ -49,10 +49,15 @@ class Select extends AbstractQueryBuilder
     public function from($from, $alias = null)
     {
         if ($from instanceof Select) {
-            $from = '(' . $from->get() . ')';
+            $from = "({$from->get()})";
+            if ($alias === null) {
+                throw new \InvalidArgumentException('Subqueries must have an alias');
+            }
+        } else if ($alias === null) {
+            $alias = $from;
         }
 
-        $this->from[] = [$from, $alias];
+        $this->from[ $alias ] = $from;
 
         return $this;
     }
@@ -67,13 +72,13 @@ class Select extends AbstractQueryBuilder
     public function get()
     {
         return $this->getSelectPart() .
-        $this->getFromPart() .
-        $this->getWhere() .
-        $this->getGroupByPart() .
-        $this->getHaving() .
-        $this->getOrderByPart() .
-        $this->getLimitingPart() .
-        $this->getLockPart();
+               $this->getFromPart() .
+               $this->getWhere() .
+               $this->getGroupByPart() .
+               $this->getHaving() .
+               $this->getOrderByPart() .
+               $this->getLimitingPart() .
+               $this->getLockPart();
     }
 
     private function getFromPart()
@@ -81,24 +86,18 @@ class Select extends AbstractQueryBuilder
         if (empty($this->from)) {
             throw new UnexpectedValueException('Select query must have a FROM clause.');
         }
-        $first = true;
-        $from  = ' FROM ';
-        foreach ($this->from as $part) {
-            if ($first) {
-                $first = false;
-            } else {
-                $from .= ', ';
+
+        $from      = ' FROM ';
+        $separator = '';
+
+        foreach ($this->from as $alias => $table) {
+            $from .= $separator . $table;
+            if ($alias !== $table) {
+                $from .= ' ' . $alias;
             }
 
-            list($table, $alias) = $part;
-            if ($alias && $alias !== $table) {
-                $table .= ' ' . $alias;
-            } else {
-                $alias = $table;
-            }
-
-            $table .= $this->getJoinPart($alias);
-            $from .= $table;
+            $from .= $this->getJoinPart($alias);
+            $separator = ', ';
         }
 
         return $from;

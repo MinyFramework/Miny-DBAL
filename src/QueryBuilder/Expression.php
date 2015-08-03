@@ -46,7 +46,7 @@ class Expression
             )
         );
 
-        $this->parts[] = '(' . $part . ')';
+        $this->parts[] = "({$part})";
 
         return $this;
     }
@@ -92,10 +92,11 @@ class Expression
     public function eq($a, $b)
     {
         if (is_array($b)) {
-            if(count($b) === 1) {
-                return $this->eq($a, current($b));
+            if (count($b) === 1) {
+                $b = current($b);
+            } else {
+                return $this->in($a, $b);
             }
-            return $this->in($a, $b);
         }
 
         return $this->compare($a, self::OPERATOR_EQ, $b);
@@ -104,10 +105,11 @@ class Expression
     public function neq($a, $b)
     {
         if (is_array($b)) {
-            if(count($b) === 1) {
-                return $this->neq($a, current($b));
+            if (count($b) === 1) {
+                $b = current($b);
+            } else {
+                return $this->notIn($a, $b);
             }
-            return $this->notIn($a, $b);
         }
 
         return $this->compare($a, self::OPERATOR_NEQ, $b);
@@ -125,28 +127,28 @@ class Expression
 
     public function isNull($a)
     {
-        $this->parts[] = $a . ' IS NULL';
+        $this->parts[] = "{$a} IS NULL";
 
         return $this;
     }
 
     public function isNotNull($a)
     {
-        $this->parts[] = $a . ' IS NOT NULL';
+        $this->parts[] = "{$a} IS NOT NULL";
 
         return $this;
     }
 
     public function between($a, $b, $c)
     {
-        $this->parts[] = $a . ' BETWEEN ' . $b . ' AND ' . $c;
+        $this->parts[] = "{$a} BETWEEN {$b} AND {$c}";
 
         return $this;
     }
 
     public function notBetween($a, $b, $c)
     {
-        $this->parts[] = $a . ' NOT BETWEEN ' . $b . ' AND ' . $c;
+        $this->parts[] = "{$a} NOT BETWEEN {$b} AND {$c}";
 
         return $this;
     }
@@ -168,14 +170,14 @@ class Expression
     {
         $in = $this->implodeInParts($in);
 
-        return $this->compare($a, self::OPERATOR_IN, '(' . $in . ')');
+        return $this->compare($a, self::OPERATOR_IN, "({$in})");
     }
 
     public function notIn($a, $in)
     {
         $in = $this->implodeInParts($in);
 
-        return $this->compare($a, self::OPERATOR_NOT_IN, '(' . $in . ')');
+        return $this->compare($a, self::OPERATOR_NOT_IN, "({$in})");
     }
 
     public function get()

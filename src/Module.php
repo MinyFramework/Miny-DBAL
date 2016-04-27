@@ -9,7 +9,9 @@
 
 namespace Modules\DBAL;
 
+use DBTiny\Driver;
 use Miny\Application\BaseApplication;
+use Miny\Log\NullLog;
 
 class Module extends \Miny\Modules\Module
 {
@@ -27,7 +29,7 @@ class Module extends \Miny\Modules\Module
         if ($this->hasConfiguration('driver')) {
             $container = $app->getContainer();
             $container->addAlias(
-                __NAMESPACE__ . '\\Driver',
+                Driver::class,
                 $this->getConfiguration('driver:class')
             );
             $startUpQueries = $this->getConfiguration('startUpQueries');
@@ -38,7 +40,7 @@ class Module extends \Miny\Modules\Module
             });
             $container->addConstructorArguments(
                 $this->getConfiguration('driver:class'),
-                $this->getConfiguration('log') ? null : $container->get('\\Miny\\Log\\NullLog'),
+                $this->getConfiguration('log') ? null : $container->get(NullLog::class),
                 $this->getConfiguration('driver:parameters'),
                 $this->getConfiguration('driver:user'),
                 $this->getConfiguration('driver:password'),

@@ -11,7 +11,8 @@
     ],
     "require": {
         "php": ">=5.4",
-        "miny/framework": "dev-master"
+        "miny/framework": "dev-master",
+        "bugadani/dbtiny": "dev-master"
     },
     "autoload": {
         "psr-4": {
